@@ -1,0 +1,1 @@
+json.extract! node, :id, :name, :color
