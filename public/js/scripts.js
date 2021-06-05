@@ -234,6 +234,10 @@ $(document).ready(function () {
                     templates.push(data.nodes[d])
                 }
             })
+            templates = templates.sort(function (a, b) {
+                return a.enumerate.localeCompare(b.enumerate);
+            });
+            console.log(templates);
             $.each(templates, function(t) {
                 var name = 'T' + templates[t].enumerate + ' ' + templates[t].name,
                     color = templates[t].color;
