@@ -2,7 +2,7 @@ var units = "Widgets";
 
 var margin = {top: 1, right: 240, bottom: 6, left: 400},
     width = 1440 - margin.left - margin.right,
-    height = 1500 - margin.top - margin.bottom;
+    height = 4000 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),
     format = function(d) { return formatNumber(d) + " TWh"; },
@@ -137,7 +137,7 @@ d3.json("http://localhost:3000/links.json", function(error, graph) {
                 highlight_link(link.id, stroke_opacity);
             });
 
-            while (remainingNodes.length) {
+            while (remainingNodes.length && x < nodes.length) {
                 nextNodes = [];
                 remainingNodes.forEach(function(node) {
                     node[step.linkType].forEach(function(link) {
