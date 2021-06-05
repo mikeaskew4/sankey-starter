@@ -5,11 +5,15 @@ class NodesController < ApplicationController
   # GET /nodes.json
   def index
     @nodes = Node.all.includes(:links)
+    @targets = Link.where(:target =>:id)
   end
 
   # GET /nodes/1
   # GET /nodes/1.json
   def show
+    # @links = Node.joins(:links)
+    @targets = Link.where(:target => @node)
+    # @links = Node.joins(:links).where(:target => 23 )
   end
 
   # GET /nodes/new
@@ -20,6 +24,7 @@ class NodesController < ApplicationController
   # GET /nodes/1/edit
   def edit
   end
+
 
   # POST /nodes
   # POST /nodes.json

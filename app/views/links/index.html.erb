@@ -5,7 +5,7 @@
 <table>
   <thead>
     <tr>
-      <th>Value</th>
+      <th>Value
       <th>Source</th>
       <th>Target</th>
       <th colspan="3"></th>
@@ -15,7 +15,6 @@
   <tbody>
     <% @links.each do |link| %>
       <tr>
-        <td><%= link.value %></td>
         <td><%= Node.find(link.source).name %></td>
         <td><%= Node.find(link.target).name %></td>
         <td><%= link_to 'Show', link %></td>

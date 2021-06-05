@@ -24,7 +24,8 @@
         </td>
 <!--        <td><%#= node.color %></td>-->
         <td>
-          <%= node.links.count %>
+          <%= node.links.count + Link.where(:target => node.id).count %>
+          <%#= node.links.count + @targets.count %>
         </td>
         <td><%= link_to 'Show', node %></td>
         <td><%= link_to 'Edit', edit_node_path(node) %></td>

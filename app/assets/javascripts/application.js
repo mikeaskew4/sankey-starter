@@ -30,6 +30,7 @@ $(document).on('turbolinks:load', function() {
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
     $('.fields').append($(this).data('fields').replace(regexp, time));
+    $(this).next('select').focus()
     return event.preventDefault();
   });
 });
