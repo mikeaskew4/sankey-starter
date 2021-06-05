@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2021_03_17_025923) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "links", force: :cascade do |t|
     t.integer "value"
     t.integer "source"
