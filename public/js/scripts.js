@@ -215,8 +215,16 @@ d3.json("/links.json", function(error, graph) {
 //         console.log('bar');
 //     })
 
+function sortJSON(arr, key, way) {
+    return arr.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        if (way === '123') { return ((x < y) ? -1 : ((x > y) ? 1 : 0)); }
+        if (way === '321') { return ((x > y) ? -1 : ((x < y) ? 1 : 0)); }
+    });
+}
 
 $(document).ready(function () {
+
     $.ajax({
         type: 'GET',
         url: '/links.json',
