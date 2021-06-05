@@ -1,7 +1,7 @@
 var units = "Widgets";
 
-var margin = {top: 1, right: 240, bottom: 6, left: 1},
-    width = 1280 - margin.left - margin.right,
+var margin = {top: 1, right: 240, bottom: 6, left: 400},
+    width = 1440 - margin.left - margin.right,
     height = 1500 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),
@@ -18,7 +18,10 @@ var svg = d3.select("#chart").append("svg")
 var sankey = d3.sankey()
     .nodeWidth(36)
     .nodePadding(40)
+    .align('center') 
     .size([width, height]);
+
+
 
 var path = sankey.link();
 
@@ -28,20 +31,26 @@ d3.json("http://localhost:3000/links.json", function(error, graph) {
     var nodeHash = {};
     graph.nodes.forEach(function(d){
         nodeHash[d.id] = d;
+        d.order = d.enumerate ? parseFloat(d.enumerate) : 100;
     });
     // loop links and swap out string for object
     graph.links.forEach(function(d){
         d.source = nodeHash[d.source];
         d.target = nodeHash[d.target];
+        d.value = d.value ? d.value : 2;
     });
+    graph.nodes = graph.nodes.sort(function(a, b){return a.order - b.order});
 
-    console.log(graph);
     sankey
         .nodes(graph.nodes)
         .links(graph.links)
         .layout(32);
 
+    strip_intermediate(graph.nodes, graph.links);
+
     console.log(graph);
+    console.log(sankey);
+
     var link = svg.append("g").selectAll(".link")
         .data(graph.links)
         .enter().append("path")
@@ -71,18 +80,25 @@ d3.json("http://localhost:3000/links.json", function(error, graph) {
     node.append("rect")
         .attr("height", function(d) { return d.dy; })
         .attr("width", sankey.nodeWidth())
-        .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+        // d.color
+        // .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+        // .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+        .style("fill", function(d) { return d.color })
         .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
         .append("title")
-        .text(function(d) { return d.name + "\n" + format(d.value); });
+        .text(function(d) { return (d.enumerate ? d.enumerate + ' ' : '') + d.name + "\n" + format(d.value); });
 
     node.append("text")
-        .attr("x", 24)
+        .attr("x", 48)
         .attr("y", function(d) { return d.dy / 2; })
         .attr("dy", ".35em")
         .attr("text-anchor", "start")
         .attr("transform", null)
-        .text(function(d) { return d.name; })
+        .text(function(d) { 
+            if(d.sourceLinks.length + d.targetLinks.length > 0) {
+                return (d.node_type == 1 ? 'T' : 'C') + (d.enumerate ? d.enumerate + ' ' : '') + d.name; 
+            }
+        })
         .filter(function(d) { return d.x < width / 2; })
         .attr("x", 6 + sankey.nodeWidth())
         .attr("text-anchor", "start");
@@ -152,7 +168,8 @@ d3.json("http://localhost:3000/links.json", function(error, graph) {
     node.append("rect")
         .attr("height", function(d) { return d.dy; })
         .attr("width", sankey.nodeWidth())
-        .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+        // .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+        .style("fill", function(d) { return d.color })
         .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
         .append("title")
         .text(function(d) { return d.name + "\n" + format(d.value); });

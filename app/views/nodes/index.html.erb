@@ -13,8 +13,13 @@
 
   <tbody>
     <% @nodes.each do |node| %>
-      <tr>
-        <td><%= node.name %></td>
+      <tr class=<%= node.node_type == 1 ? "template" : "component"%>>
+        <td style="text-align:right">
+          <%= node.node_type == 1 ? 'T' : 'C' %><%= node.enumerate %>
+        </td>
+        <td colspan="2">
+          <%= node.name %>    
+        </td>
         <td><%= node.color %></td>
         <td><%= link_to 'Show', node %></td>
         <td><%= link_to 'Edit', edit_node_path(node) %></td>

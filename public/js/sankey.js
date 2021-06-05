@@ -132,14 +132,15 @@ d3.sankey = function() {
         }
 
         //
-        moveSinksRight(x);
+        // moveSinksRight(x);
+        moveSourcesRight();
         scaleNodeBreadths((width - nodeWidth) / (x - 1));
     }
 
     function moveSourcesRight() {
         nodes.forEach(function(node) {
             if (!node.targetLinks.length) {
-                node.x = d3.min(node.sourceLinks, function(d) { return d.target.x; }) - 1;
+                node.x = d3.min(node.sourceLinks, function(d) { return d.target.x / 2; }) - 1;
             }
         });
     }
@@ -231,7 +232,7 @@ d3.sankey = function() {
                     i;
 
                 // Push any overlapping nodes down.
-                nodes.sort(ascendingDepth);
+                // nodes.sort(ascendingDepth);
                 for (i = 0; i < n; ++i) {
                     node = nodes[i];
                     dy = y0 - node.y;
@@ -296,3 +297,25 @@ d3.sankey = function() {
 
     return sankey;
 };
+
+function strip_intermediate(nodes, links) {
+        for (var i = links.length-1; i >= 0; i--) {
+            var link = links[i]
+            if (link.original_target) {
+                var intermediate = nodes[link.last_leg_source]
+                link.target = nodes[link.original_target]
+                link.ty = intermediate.sourceLinks[0].ty
+            }
+        }
+        for (var i = links.length-1; i >= 0; i--) {
+            var link = links[i]
+            if (link.source.name == "intermediate") {
+                links.splice(i, 1)
+            }
+        }
+        for (var i = nodes.length-1; i >= 0; i--) {
+            if (nodes[i].name == "intermediate") {
+                nodes.splice(i, 1)
+            }
+        }
+    }    

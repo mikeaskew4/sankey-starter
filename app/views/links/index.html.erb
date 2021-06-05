@@ -16,8 +16,8 @@
     <% @links.each do |link| %>
       <tr>
         <td><%= link.value %></td>
-        <td><%= link.source %></td>
-        <td><%= link.target %></td>
+        <td><%= Node.find(link.source).name %></td>
+        <td><%= Node.find(link.target).name %></td>
         <td><%= link_to 'Show', link %></td>
         <td><%= link_to 'Edit', edit_link_path(link) %></td>
         <td><%= link_to 'Destroy', link, method: :delete, data: { confirm: 'Are you sure?' } %></td>

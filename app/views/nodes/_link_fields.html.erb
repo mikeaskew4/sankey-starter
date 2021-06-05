@@ -1,0 +1,6 @@
+<div class="form-group nested-fields">
+	<div class="field">
+      <%= f.label :target %>
+      <%= f.select :target, Node.all.collect {|s| [ s.name, s.id ] }, {prompt: 'Select component'}, class:"form-control" %>
+    </div>
+</div>

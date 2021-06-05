@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Node Links</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Node</th>
+      <th>Link</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @node_links.each do |node_link| %>
+      <tr>
+        <td><%= node_link.node_id %></td>
+        <td><%= node_link.link_id %></td>
+        <td><%= link_to 'Show', node_link %></td>
+        <td><%= link_to 'Edit', edit_node_link_path(node_link) %></td>
+        <td><%= link_to 'Destroy', node_link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Node Link', new_node_link_path %>

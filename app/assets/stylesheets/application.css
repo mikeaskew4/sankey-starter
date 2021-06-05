@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+
+
+tr.template {
+	font-weight: bold
+}

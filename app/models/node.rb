@@ -1,3 +1,8 @@
 class Node < ApplicationRecord
-  # has_many :links
+  # attr_accessor :links	
+  # has_many :node_links, dependent: :destroy
+  # has_many :links, :through => :node_links
+  has_many :links, foreign_key: "source", autosave: true
+
+  accepts_nested_attributes_for :links
 end

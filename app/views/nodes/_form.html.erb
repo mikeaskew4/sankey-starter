@@ -1,4 +1,4 @@
-<%= form_with(model: node, local: true) do |form| %>
+<%= form_with(model: node, local: true) do |f| %>
   <% if node.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(node.errors.count, "error") %> prohibited this node from being saved:</h2>
@@ -12,16 +12,36 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= f.label :node_type %>
+    <%= f.select(:node_type, [['Component', 2], ['Template', 1]]) %>
+  </div>
+
+
+  <div class="field">
+    <%= f.label 'Number' %>
+    <%= f.text_field :enumerate %>
   </div>
 
   <div class="field">
-    <%= form.label :color %>
-    <%= form.text_field :color %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="field">
+    <%= f.label :color %>
+    <%= f.color_field :color, value: node.color ? node.color : "#ffc107" %>
   </div>
+
+  <div class="fields">
+    <%= f.fields_for :links do |link| %>
+      <%= render 'link_fields', f: link %>
+    <% end %>
+  </div>
+  <div>
+    <%= link_to_add_row('Add Link', f, :links, class: 'btn btn-primary') %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+  
 <% end %>

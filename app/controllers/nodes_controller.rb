@@ -4,7 +4,7 @@ class NodesController < ApplicationController
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = Node.all
+    @nodes = Node.all.includes(:links)
   end
 
   # GET /nodes/1
@@ -69,6 +69,7 @@ class NodesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def node_params
-      params.require(:node).permit(:name, :color)
+      params.require(:node).permit(:name, :color, :node_type, :enumerate,
+        links_attributes: [:id, :value, :source, :target, :_destroy])
     end
 end
