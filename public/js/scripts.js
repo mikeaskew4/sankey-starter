@@ -224,23 +224,21 @@ function sortJSON(arr, key, way) {
 }
 
 $(document).ready(function () {
-
+    var templates = [];
     $.ajax({
         type: 'GET',
         url: '/links.json',
         success: function (data) {
-
             $.each(data.nodes, function (d) {
                 if (data.nodes[d].node_type == 1) {
-                    console.log(data.nodes[d]);
-                    var name = 'T' + data.nodes[d].enumerate + ' ' + data.nodes[d].name,
-                        color = data.nodes[d].color;
-                    $('#key').append('<div class="col" style="background: ' + color + ' ">'  + name + '</div>');
+                    templates.push(data.nodes[d])
                 }
             })
-            // var names = data
-            // $('#key').html(data);
-
+            $.each(templates, function(t) {
+                var name = 'T' + templates[t].enumerate + ' ' + templates[t].name,
+                    color = templates[t].color;
+                $('#key').append('<div class="col" style="background: ' + color + ' ">'  + name + '</div>');
+            })
         }
     });
 });
