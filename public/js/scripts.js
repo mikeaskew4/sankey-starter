@@ -26,7 +26,7 @@ var sankey = d3.sankey()
 var path = sankey.link();
 
 // load the data
-d3.json("//localhost:3000/links.json", function(error, graph) {
+d3.json("/links.json", function(error, graph) {
 // create hash of nodes
     var nodeHash = {};
     graph.nodes.forEach(function(d){
@@ -219,7 +219,7 @@ d3.json("//localhost:3000/links.json", function(error, graph) {
 $(document).ready(function () {
     $.ajax({
         type: 'GET',
-        url: '//localhost:3000/links.json',
+        url: '/links.json',
         success: function (data) {
 
             $.each(data.nodes, function (d) {
