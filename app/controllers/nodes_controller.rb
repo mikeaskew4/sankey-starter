@@ -4,7 +4,7 @@ class NodesController < ApplicationController
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = Node.all.includes(:links)
+    @nodes = Node.all.includes(:links).order(node_type: :asc, enumerate: :asc)
     @targets = Link.where(:target =>:id)
   end
 
