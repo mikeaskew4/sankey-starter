@@ -1,6 +1,8 @@
 <div class="form-group nested-fields">
 	<div class="field">
       <%= f.label :target %>
-      <%= f.select :target, Node.all.collect {|s| [ s.name, s.id ] }, {prompt: 'Select component'}, class:"form-control" %>
+      <%= f.select :target, Node.all.collect {|s| [ s.enumerate + ' ' + s.name, s.id ] }, {prompt: 'Select component'}, class:"form-control" %>
+      <%= f.hidden_field :_destroy %>
+      <%= link_to 'Delete', '#', class: 'remove_record' %>
     </div>
 </div>

@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Number:</strong>
+  <%= @node.enumerate %>
+</p>
+
+<p>
   <strong>Name:</strong>
   <%= @node.name %>
 </p>
@@ -9,6 +14,11 @@
   <strong>Color:</strong>
   <%= @node.color %>
 </p>
+<p>
+  Total Links: <%= @node.links.count + @targets.count %>
+</p>
+
 
 <%= link_to 'Edit', edit_node_path(@node) %> |
-<%= link_to 'Back', nodes_path %>
+<%= link_to 'Back', nodes_path %> |
+<%= link_to 'New Node', new_node_path %>

@@ -5,8 +5,10 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Color</th>
+      <th></th>
+      <th colspan="2">Name</th>
+<!--      <th>Color</th>-->
+      <th>Links</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,13 +16,17 @@
   <tbody>
     <% @nodes.each do |node| %>
       <tr class=<%= node.node_type == 1 ? "template" : "component"%>>
-        <td style="text-align:right">
+        <td style="text-align:left">
           <%= node.node_type == 1 ? 'T' : 'C' %><%= node.enumerate %>
         </td>
         <td colspan="2">
           <%= node.name %>    
         </td>
-        <td><%= node.color %></td>
+<!--        <td><%#= node.color %></td>-->
+        <td>
+          <%= node.links.count + Link.where(:target => node.id).count %>
+          <%#= node.links.count + @targets.count %>
+        </td>
         <td><%= link_to 'Show', node %></td>
         <td><%= link_to 'Edit', edit_node_path(node) %></td>
         <td><%= link_to 'Destroy', node, method: :delete, data: { confirm: 'Are you sure?' } %></td>

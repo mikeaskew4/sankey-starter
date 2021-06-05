@@ -1,8 +1,8 @@
-var units = "Widgets";
+var units = "Nodes";
 
 var margin = {top: 1, right: 240, bottom: 6, left: 400},
     width = 1440 - margin.left - margin.right,
-    height = 1500 - margin.top - margin.bottom;
+    height = 3000 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),
     format = function(d) { return formatNumber(d) + " TWh"; },
@@ -26,7 +26,7 @@ var sankey = d3.sankey()
 var path = sankey.link();
 
 // load the data
-d3.json("http://localhost:3000/links.json", function(error, graph) {
+d3.json("//localhost:3000/links.json", function(error, graph) {
 // create hash of nodes
     var nodeHash = {};
     graph.nodes.forEach(function(d){
@@ -70,6 +70,7 @@ d3.json("http://localhost:3000/links.json", function(error, graph) {
         .data(graph.nodes)
         .enter().append("g")
         .attr("class", "node")
+        .attr("data-color", "red")
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
         .on("click",highlight_node_links)
         .call(d3.behavior.drag()
@@ -83,8 +84,11 @@ d3.json("http://localhost:3000/links.json", function(error, graph) {
         // d.color
         // .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
         // .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
-        .style("fill", function(d) { return d.color })
-        .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+        // .style("fill", function(d) { return d.color })
+        // .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+        .style("fill", function(d) { if (d.color !== '#ffc107') { return d.color } else { return '#333'} })
+        .style("stroke", '#ddd')
+
         .append("title")
         .text(function(d) { return (d.enumerate ? d.enumerate + ' ' : '') + d.name + "\n" + format(d.value); });
 
@@ -137,7 +141,7 @@ d3.json("http://localhost:3000/links.json", function(error, graph) {
                 highlight_link(link.id, stroke_opacity);
             });
 
-            while (remainingNodes.length) {
+            while (remainingNodes.length && x < nodes.length) {
                 nextNodes = [];
                 remainingNodes.forEach(function(node) {
                     node[step.linkType].forEach(function(link) {
@@ -185,9 +189,50 @@ d3.json("http://localhost:3000/links.json", function(error, graph) {
         .attr("x", 6 + sankey.nodeWidth())
         .attr("text-anchor", "start");
 
+    svg.selectAll(".link")
+        .style('stroke', function(d){
+            return d.source.color;
+        })
+
     function dragmove(d) {
         d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
         sankey.relayout();
         link.attr("d", path);
     }
+});
+
+// $('#sort').on('click', function() {
+//     console.log('foo');
+//     d3.select("#chart")
+//         .selectAll("node")
+//         .datum((d,i,nodes) => +nodes[i].getAttribute("r"))
+//         .sort((a,b) => b - a)
+//         .attr("y", (d, i) => i * 20);
+// })
+
+// d3.select("#sort")
+//     .on("click", function(){
+//         console.log('bar');
+//     })
+
+
+$(document).ready(function () {
+    $.ajax({
+        type: 'GET',
+        url: '//localhost:3000/links.json',
+        success: function (data) {
+
+            $.each(data.nodes, function (d) {
+                if (data.nodes[d].node_type == 1) {
+                    console.log(data.nodes[d]);
+                    var name = 'T' + data.nodes[d].enumerate + ' ' + data.nodes[d].name,
+                        color = data.nodes[d].color;
+                    $('#key').append('<div class="col" style="background: ' + color + ' ">'  + name + '</div>');
+                }
+            })
+            // var names = data
+            // $('#key').html(data);
+
+        }
+    });
 });

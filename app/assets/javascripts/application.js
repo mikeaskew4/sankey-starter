@@ -21,7 +21,7 @@ $(document).on('turbolinks:load', function() {
 
   $('form').on('click', '.remove_record', function(event) {
     $(this).prev('input[type=hidden]').val('1');
-    $(this).closest('tr').hide();
+    $(this).closest('.field').hide();
     return event.preventDefault();
   });
 
@@ -30,6 +30,7 @@ $(document).on('turbolinks:load', function() {
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
     $('.fields').append($(this).data('fields').replace(regexp, time));
+    $(this).next('select').focus()
     return event.preventDefault();
   });
 });
